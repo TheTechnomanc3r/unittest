@@ -1,25 +1,49 @@
 import unittest
 from student import Student
+from datetime import timedelta
 
 class TestStudent(unittest.TestCase):
 
-    def test_full_name(self):
-        student = Student('John', 'Snow')
+    @classmethod
+    def setUpClass(cls):
+        print('\033[34m setUpClass \033[00m')
 
-        self.assertEqual(student.full_name, 'John Snow')
+    @classmethod
+    def tearDownClass(cls):
+        print('tearDownClass')
+
+
+    def setUp(self):
+        print('\033[1;32m setUp \033[00m')
+        self.student = Student('John', 'Snow')
+
+    def tearDown(self):
+        print('\033[1;31m tearDown \033[00m')    
+
+
+    def test_full_name(self):
+        print('test_full_name')
+        self.assertEqual(self.student.full_name, 'John Snow')
 
 
     def test_alert_santa(self):
-        student = Student('John', 'Doe')
-        student.alert_santa()
-
-        self.assertTrue(student.naughty_list)
+        print('test_alert_santa')
+        self.student.alert_santa()
+        self.assertTrue(self.student.naughty_list)
 
 
     def test_email(self):
-        student = Student('John', 'Snow')
+        print('test_email')
+        self.assertEqual(self.student.email, 'john.snow@email.com')
 
-        self.assertEqual(student.email, 'john.snow@email.com')
+
+    def test_apply_extension(self):
+        old_end_date = self.student.end_date
+        self.student.apply_extension(5)
+
+        self.assertEqual(self.student.end_date, old_end_date + timedelta(days=5))
+        print('test_apply_extension')
+         
 
 
 if __name__ == '__main__':
